@@ -44,12 +44,34 @@ var quizHandler = function() {
     questionBox.id = "question-box";
     document.getElementById("quiz").appendChild(questionBox);
 
+
+    //create H2 element within div to hold question text
     var questionDisplay = document.createElement("h2");
     var questionDisplayText = document.createTextNode(questionContent[0].question);
+    questionDisplay.className = "question-header"
     questionDisplay.appendChild(questionDisplayText);
-    
     document.getElementById("question-box").appendChild(questionDisplay);
 
+    //add list item answer options to div element 
+    var choiceOptionA = document.createElement("li")
+    choiceOptionA.className = "choice-item";
+    choiceOptionA.textContent = questionContent[0].answerA;
+    document.getElementById("question-box").appendChild(choiceOptionA);
+
+    var choiceOptionB = document.createElement("li")
+    choiceOptionB.className = "choice-item";
+    choiceOptionB.textContent = questionContent[0].answerB;
+    document.getElementById("question-box").appendChild(choiceOptionB);
+
+    var choiceOptionC = document.createElement("li")
+    choiceOptionC.className = "choice-item";
+    choiceOptionC.textContent = questionContent[0].answerC;
+    document.getElementById("question-box").appendChild(choiceOptionC);
+
+    var choiceOptionD = document.createElement("li")
+    choiceOptionD.className = "choice-item";
+    choiceOptionD.textContent = questionContent[0].answerD;
+    document.getElementById("question-box").appendChild(choiceOptionD);
 
     //remove start quiz button
     launcher.remove();

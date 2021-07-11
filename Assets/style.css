@@ -51,8 +51,17 @@ header {
     
 }
 
-.question-box h3 {
+.question-header {
     color: red;
+    padding: 10px;
+}
+
+.choice-item {
+    list-style: upper-alpha;
+    width: 100%;
+    color: green;
+    padding: 0 0 10px 25px;
+
 }
 
 .question-display {
