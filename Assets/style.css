@@ -38,3 +38,23 @@ header {
     justify-content: center;
     margin: 100px 40px 0 40px;
 }
+
+.question-box {
+    border: 5px solid black;
+    font-size: 36px;
+    font-weight: bold;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 100px 40px 0 40px;
+
+    
+}
+
+.question-box h3 {
+    color: red;
+}
+
+.question-display {
+    color: green;
+}
