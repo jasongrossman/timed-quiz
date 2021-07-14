@@ -28,7 +28,7 @@ header {
 .start-quiz {
     padding: 10px;
     border: 2px solid black;
-    background: royalblue;
+    background: #036ffc;
     font-size: 36px;
     font-weight: bold;
     border-radius: 15px;
@@ -46,22 +46,21 @@ header {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 100px 40px 0 40px;
-
-    
+    margin: 100px 40px 0 40px;    
 }
 
 .question-header {
     color: red;
-    padding: 10px;
 }
 
 .choice-item {
-    list-style: upper-alpha;
-    width: 100%;
-    color: green;
-    padding: 0 0 10px 25px;
-
+    width: 50%;
+    height: 20%;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    background: #036ffc;
+    text-align: center;
 }
 
 .question-display {
