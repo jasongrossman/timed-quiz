@@ -66,3 +66,13 @@ header {
 .question-display {
     color: green;
 }
+
+.correct {
+    width: 50%;
+    height: 20%;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    background: #42f560;
+    text-align: center;
+}
