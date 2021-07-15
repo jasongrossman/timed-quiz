@@ -3,34 +3,36 @@ var launcherEl = document.querySelector("#launcher");
 var highScoresList = document.querySelector("#high-scores");
 var clockStart = 5;
 var questionCounter = 0;
+var guess = "";
 var questionContent = [ 
     {
         question: "Does this work?",
-        answerA: "Doubt it",
-        answerB: "Yes!",
-        answerC: "lmao no",
-        answerD: "r u srs?",
+        incorrectA: "Doubt it",
+        incorrectB: "lmao no",
+        incorrectC: "r u srs?",
+        solution: "Yes!"
     },
     {
         question: "Who are you?",
-        answerA: "Jason",
-        answerB: "Bjorn",
-        answerC: "Mr. Frog",
-        answerD: "Dr. Pepper",
+        answerA: "Bjorn",
+        answerB: "Mr. Frog",
+        answerC: "Dr. Pepper",
+        solution: "Jason"
     }
 ];
 
 var solutions = [
     {
        question: 1,
-       solution: "Yes!"
+       solution: questionContent[0].answerB
     },
     {
         question: 2,
-        solution: "Jason"
+        solution: questionContent[1].answerA
     }
 ];
 
+    //timer function that counts down when quiz begins.
     var timer = function() {
         var clockDisplay = document.createElement("h3");
         clockDisplay.textContent = clockStart;
@@ -41,7 +43,6 @@ var solutions = [
                 clearInterval(countdown);
             }   
         }, 1000);
-
     }
 
 //Quiz function
@@ -53,6 +54,7 @@ var quizHandler = function() {
 
     //start timer:
     timer();
+
     //loop to iterate through each question in the questionContentArray
 
     //create Container to hold elements 
@@ -69,34 +71,73 @@ var quizHandler = function() {
     document.getElementById("question-box").appendChild(questionDisplay);
 
     //add list item answer options to div element as button
-    var choiceOptionA = document.createElement("button")
+    var choiceOptionA = document.createElement("button");
     choiceOptionA.className = "choice-item";
-    choiceOptionA.textContent = questionContent[0].answerA;
+    choiceOptionA.textContent = questionContent[0].incorrectA;
     document.getElementById("question-box").appendChild(choiceOptionA);
 
-    var choiceOptionB = document.createElement("button")
+    var choiceOptionB = document.createElement("button");
     choiceOptionB.className = "choice-item";
-    choiceOptionB.textContent = questionContent[0].answerB;
+    choiceOptionB.textContent = questionContent[0].incorrectB;
     document.getElementById("question-box").appendChild(choiceOptionB);
 
-    var choiceOptionC = document.createElement("button")
+    var choiceOptionC = document.createElement("button");
     choiceOptionC.className = "choice-item";
-    choiceOptionC.textContent = questionContent[0].answerC;
+    choiceOptionC.textContent = questionContent[0].incorrectC;
     document.getElementById("question-box").appendChild(choiceOptionC);
 
-    var choiceOptionD = document.createElement("button")
-    choiceOptionD.className = "choice-item";
-    choiceOptionD.textContent = questionContent[0].answerD;
-    document.getElementById("question-box").appendChild(choiceOptionD);
+    var choiceSolution = document.createElement("button");
+    choiceSolution.className = "choice-item";
+    choiceSolution.textContent = questionContent[0].solution;
+    document.getElementById("question-box").appendChild(choiceSolution);
 
     //remove start quiz button
     launcher.remove();
 
+
+
+    
+    //Add event listeners on buttons to determine correct answers
+    choiceOptionA.addEventListener("click", function(){
+        guess = choiceOptionA.textContent;
+        checkAnswer();
+    });
+    choiceOptionB.addEventListener("click", function(){
+        guess = choiceOptionB.textContent;
+        checkAnswer();
+    });
+    
+    choiceOptionC.addEventListener("click", function(){
+        guess = choiceOptionC.textContent;
+        checkAnswer();
+    });    
+    choiceSolution.addEventListener("click", function(){
+        guess = choiceSolution.textContent;
+        checkAnswer();
+    });
+    
+     //checks clicked answer and compares to correct answer
+     var checkAnswer = function() { 
+        console.log(guess);
+        if (guess.localeCompare(choiceSolution.textContent) == 0) {
+            alert(guess + " is correct!");
+            console.log(guess);
+            console.log(choiceSolution.textContent);
+        }
+        else {
+            alert("HAHAHA nice try but no.");
+            console.log(guess);
+            console.log(choiceSolution);
+
+        }
+    }
+
+}
     //create Question element
-    console.log(questionContent[0].question);
+
 
     //Create Answer Buttons
-    console.log(solutions[0].solution);
+
     
     //Begin Countdown Timer
 
@@ -105,13 +146,11 @@ var quizHandler = function() {
 
     //if function to validate correct answer
 
-
-}
-
 //High Scores List
 var displayHighScores = function() {
     window.alert("You are good at this game!");
 }
+
 
 //event listeners
 launcherEl.addEventListener("click", quizHandler);
