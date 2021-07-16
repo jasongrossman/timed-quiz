@@ -63,6 +63,10 @@ header {
     text-align: center;
 }
 
+.choice-item:hover {
+    opacity: 0.8;
+}
+
 .question-display {
     color: green;
 }
@@ -75,4 +79,12 @@ header {
     font-weight: bold;
     background: #42f560;
     text-align: center;
+}
+
+.final-score {
+    border: 5px solid black;
+    font-size: 48px;
+    font-weight: bold;
+    padding: 20px;
+    margin: auto;
 }

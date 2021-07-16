@@ -2,6 +2,7 @@
 var launcherEl = document.querySelector("#launcher");
 var highScoresList = document.querySelector("#high-scores");
 var clockStart = 50;
+var countdown = 0;
 var questionCounter = 0;
 var guess = "";
 var questionBox = null;
@@ -15,31 +16,63 @@ var questionContent = [
     },
     {
         question: "Who are you?",
-        answerA: "Bjorn",
-        answerB: "Mr. Frog",
-        answerC: "Dr. Pepper",
+        incorrectA: "Bjorn",
+        incorrectB: "Mr. Frog",
+        incorrectC: "Dr. Pepper",
         solution: "Jason"
+    },
+    {
+        question: "Will we make it to the next question?",
+        incorrectA: "It's not looking likely",
+        incorrectB: "Maybe if you asked for directions...",
+        incorrectC: "Isn't this the last question?",
+        solution: "Of course we will! Just trust me"
+    },
+    {
+        question: "Is there a light at the end of this tunnel?",
+        incorrectA: "I am the light. What you seek are answers",
+        incorrectB: "Life is but a dreary road, look not for the light.",
+        incorrectC: "Tunnels are mere constructs of man. Light is eternal",
+        solution: "yeah, there are only 5 questions."
     }
 ];
-
 
     //timer function that counts down when quiz begins.
     var timer = function() {
         var clockDisplay = document.createElement("h3");
         clockDisplay.textContent = clockStart;
         document.getElementById("clock").appendChild(clockDisplay);
-        var countdown = setInterval(() => {
+        countdown = setInterval(() => {
             clockDisplay.textContent = clockStart--;
             if (clockStart <0) {
                 clearInterval(countdown);
             }   
         }, 1000);
     }
+    
+    var quizcomplete = function() {
+        var finalScore = document.createElement("div");
+        finalScore.className = "final-score";
+        finalScore.id = "final-score"
+        document.getElementById("quiz").appendChild(finalScore)
+        var scoreTotal = document.createElement("h3");
+        scoreTotal.innerText = "Your score is " + clockStart + " points.";
+        document.getElementById("final-score").appendChild(scoreTotal)
+        clearInterval(countdown);
+
+    }
+
 
     var nextquestion = function() {
-            questionBox.remove();
+        questionBox.remove();
         questionCounter++;
+        console.log(questionCounter);
+        if (questionCounter >= questionContent.length) {
+            quizcomplete();
+        }
+        else { 
         quizHandler();
+        }
     };
 
 //Quiz function
@@ -103,7 +136,6 @@ var quizHandler = function() {
     });    
     choiceSolution.addEventListener("click", function(){
         guess = choiceSolution.textContent;
-        choiceSolution.style.backgroundColor = "#42f560";
         checkAnswer();
     });
     
@@ -114,14 +146,20 @@ var quizHandler = function() {
             alert(guess + " is correct!");
             console.log(guess);
             console.log(choiceSolution.textContent);
-            nextquestion();
+            choiceSolution.style.backgroundColor = "#42f560";
+            setTimeout(() => {
+                nextquestion();
+            }, 500);
+    
         }
         else {
             alert("HAHAHA nice try but no.");
+            clockStart = clockStart -5;
             console.log(guess);
             console.log(choiceSolution);
-            clockStart = clockStart -5;
-            nextquestion();
+            setTimeout(() => {
+                nextquestion();
+            }, 500);
         }
     }
 }
