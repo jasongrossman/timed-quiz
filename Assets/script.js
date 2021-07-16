@@ -6,6 +6,7 @@ var countdown = 0;
 var questionCounter = 0;
 var guess = "";
 var questionBox = null;
+var score = [];
 var questionContent = [ 
     {
         question: "Does this work?",
@@ -36,6 +37,9 @@ var questionContent = [
         solution: "yeah, there are only 5 questions."
     }
 ];
+var savedScores = JSON.parse(localStorage.getItem("savedScores")) || [];
+console.log(savedScores);
+
 
     //timer function that counts down when quiz begins.
     var timer = function() {
@@ -55,14 +59,57 @@ var questionContent = [
         finalScore.className = "final-score";
         finalScore.id = "final-score"
         document.getElementById("quiz").appendChild(finalScore)
-        var scoreTotal = document.createElement("h3");
+        scoreTotal = document.createElement("h3");
         scoreTotal.innerText = "Your score is " + clockStart + " points.";
         document.getElementById("final-score").appendChild(scoreTotal)
         clearInterval(countdown);
+        saveHighScore();
 
     }
+    //save high score at end of quiz complete function
+    var saveHighScore = function() {
+        savedScores.push(clockStart);
+        // score = {
+        //     points: clockStart,
+        //     name: "placeholder"
+        // }
+        // savedScores.push(score);
+        localStorage.setItem("savedScores", JSON.stringify(savedScores));
 
+    };
 
+    //when View High Scores is clicked, start displayHighScores function
+    var displayHighScores = function() {
+        console.log(savedScores);
+
+        // alert("Let's see all the top scores:");
+        // var scoreList = document.createElement("ul");
+        // scoreList.textContent = "List of High Scores";
+        // scoreList.className = "high-score-table";
+        // scoreList.id = "scoreList";
+        // document.getElementById("high-score-list").appendChild(scoreList);
+        // var savedScores = localStorage.getItem("clockStart");
+        // console.log(savedScores);
+        // alert(savedScores);
+        // // // if there are no scores, set scores to an empty array and return out of the function
+        // // if (!clockStart) {
+        // //   return false;
+        // // }
+      
+        // // parse into array of objects
+        // savedScores = JSON.parse(savedScores);
+      
+        // // // loop through savedTasks array
+        // for (var i = 0; i < savedScores.length; i++) {
+        //   // create score list element and pass each score through
+        //   var score = savedScores[i];
+        //   var scorelistItem = document.createElement("li");
+        //   document.getElementById("scoreListItem").appendChild(score);
+        //   document.getElementById("scoreList").appendChild(scorelistItem);
+        //   console.log(score);
+        // }
+      
+    }
     var nextquestion = function() {
         questionBox.remove();
         questionCounter++;
@@ -176,11 +223,6 @@ var quizHandler = function() {
 
     //if function to validate correct answer
 
-//High Scores List
-var displayHighScores = function() {
-    window.alert("You are good at this game!");
-}
-
 
 //event listeners
 launcherEl.addEventListener("click", function() {
@@ -193,4 +235,3 @@ launcherEl.addEventListener("click", function() {
 });
 
 highScoresList.addEventListener("click", displayHighScores);
-
