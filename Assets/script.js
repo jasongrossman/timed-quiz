@@ -81,6 +81,17 @@ console.log(savedScores);
     //when View High Scores is clicked, start displayHighScores function
     var displayHighScores = function() {
         console.log(savedScores);
+        var scoreList = document.createElement("ol");
+        scoreList.textContent = "List of High Scores";
+        scoreList.className = "high-score-table";
+        scoreList.id = "scoreList";
+        document.getElementById("high-score-list").appendChild(scoreList);
+
+        for (i = 0; i < savedScores.length; i++) {
+          var scorelistItem = document.createElement("li");
+          scorelistItem.textContent = savedScores[i];
+          document.getElementById("scoreList").appendChild(scorelistItem);
+        };
 
         // alert("Let's see all the top scores:");
         // var scoreList = document.createElement("ul");
