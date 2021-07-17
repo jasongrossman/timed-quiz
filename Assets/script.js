@@ -1,10 +1,12 @@
 //global variable declarations
 var launcherEl = document.querySelector("#launcher");
 var highScoresList = document.querySelector("#high-scores");
-var clockStart = 5;
+var clockStart = 50;
 var countdown = 0;
 var questionCounter = 0;
+var score = [];
 var guess = "";
+var username = "";
 var questionBox = null;
 // var score = [];
 var questionContent = [ 
@@ -73,7 +75,7 @@ console.log(savedScores);
         savedScores.push(clockStart);
         // score = {
         //     points: clockStart,
-        //     name: "placeholder"
+        //     name: username
         // }
         // savedScores.push(score);
         localStorage.setItem("savedScores", JSON.stringify(savedScores));
@@ -116,16 +118,6 @@ console.log(savedScores);
         // // parse into array of objects
         // savedScores = JSON.parse(savedScores);
       
-        // // // loop through savedTasks array
-        // for (var i = 0; i < savedScores.length; i++) {
-        //   // create score list element and pass each score through
-        //   var score = savedScores[i];
-        //   var scorelistItem = document.createElement("li");
-        //   document.getElementById("scoreListItem").appendChild(score);
-        //   document.getElementById("scoreList").appendChild(scorelistItem);
-        //   console.log(score);
-        // }
-      
     }
     var nextquestion = function() {
         questionBox.remove();
@@ -147,7 +139,6 @@ var quizHandler = function() {
     // window.confirm("Are you ready?");
 
 
-    //loop to iterate through each question in the questionContentArray
 
     //create Container to hold elements 
     questionBox = document.createElement("div");
@@ -155,34 +146,48 @@ var quizHandler = function() {
     questionBox.id = "question-box";
     document.getElementById("quiz").appendChild(questionBox);
 
+    //shuffle choice options in random order
+    let options = Object.entries(questionContent[questionCounter]);
+    const displayQuestion = options[0];
+    let questionChoices = _.shuffle(options.slice(1));
+    console.log({questionChoices, displayQuestion});
+    // let questionChoicesCounter = 0;
+
     //create H2 element within div to hold question text
     var questionDisplay = document.createElement("h2");
-    var questionDisplayText = document.createTextNode(questionContent[questionCounter].question);
-    questionDisplay.className = "question-header"
+    var questionDisplayText = document.createTextNode(displayQuestion[1]);
+    questionDisplay.className = "question-header";
     questionDisplay.appendChild(questionDisplayText);
     document.getElementById("question-box").appendChild(questionDisplay);
 
     //add list item answer options to div element as button
     var choiceOptionA = document.createElement("button");
     choiceOptionA.className = "choice-item";
-    choiceOptionA.textContent = questionContent[questionCounter].incorrectA;
+    const optionA = questionChoices[0];
+    choiceOptionA.textContent = optionA[1];
     document.getElementById("question-box").appendChild(choiceOptionA);
 
     var choiceOptionB = document.createElement("button");
     choiceOptionB.className = "choice-item";
-    choiceOptionB.textContent = questionContent[questionCounter].incorrectB;
+    const optionB = questionChoices[1];
+    choiceOptionB.textContent = optionB[1];
+    // choiceOptionB.textContent = questionContent[questionCounter].incorrectB;
     document.getElementById("question-box").appendChild(choiceOptionB);
 
     var choiceOptionC = document.createElement("button");
     choiceOptionC.className = "choice-item";
-    choiceOptionC.textContent = questionContent[questionCounter].incorrectC;
+    const optionC = questionChoices[2];
+    choiceOptionC.textContent = optionC[1];
+
+    // choiceOptionC.textContent = questionContent[questionCounter].incorrectC;
     document.getElementById("question-box").appendChild(choiceOptionC);
 
-    var choiceSolution = document.createElement("button");
-    choiceSolution.className = "choice-item";
-    choiceSolution.textContent = questionContent[questionCounter].solution;
-    document.getElementById("question-box").appendChild(choiceSolution);
-
+    var choiceOptionD = document.createElement("button");
+    choiceOptionD.className = "choice-item";
+    const optionD = questionChoices[3];
+    choiceOptionD.textContent = optionD[1];
+    // choiceSolution.textContent = questionContent[questionCounter].solution;
+    document.getElementById("question-box").appendChild(choiceOptionD);
    
     //Add event listeners on buttons to determine correct answers
     choiceOptionA.addEventListener("click", function(){
@@ -198,29 +203,23 @@ var quizHandler = function() {
         guess = choiceOptionC.textContent;
         checkAnswer();
     });    
-    choiceSolution.addEventListener("click", function(){
-        guess = choiceSolution.textContent;
+    choiceOptionD.addEventListener("click", function(){
+        guess = choiceOptionD.textContent;
         checkAnswer();
     });
     
      //checks clicked answer and compares to correct answer
      var checkAnswer = function() { 
         console.log(guess);
-        if (guess.localeCompare(choiceSolution.textContent) == 0) {
+        if (guess === questionContent[questionCounter].solution) {
             alert(guess + " is correct!");
-            console.log(guess);
-            console.log(choiceSolution.textContent);
-            choiceSolution.style.backgroundColor = "#42f560";
             setTimeout(() => {
                 nextquestion();
             }, 500);
-    
         }
         else {
             alert("HAHAHA nice try but no.");
             clockStart = clockStart -5;
-            console.log(guess);
-            console.log(choiceSolution);
             setTimeout(() => {
                 nextquestion();
             }, 500);
@@ -245,6 +244,9 @@ var quizHandler = function() {
 launcherEl.addEventListener("click", function() {
     //remove start button
     launcher.remove();
+     //prompt for user name
+    username = prompt("Please enter your username for the game");
+
     //start timer:
     timer();
     //start quiz
