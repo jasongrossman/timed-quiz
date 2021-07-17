@@ -1,12 +1,12 @@
 //global variable declarations
 var launcherEl = document.querySelector("#launcher");
 var highScoresList = document.querySelector("#high-scores");
-var clockStart = 50;
+var clockStart = 5;
 var countdown = 0;
 var questionCounter = 0;
 var guess = "";
 var questionBox = null;
-var score = [];
+// var score = [];
 var questionContent = [ 
     {
         question: "Does this work?",
@@ -48,8 +48,9 @@ console.log(savedScores);
         document.getElementById("clock").appendChild(clockDisplay);
         countdown = setInterval(() => {
             clockDisplay.textContent = clockStart--;
-            if (clockStart <0) {
+            if (clockStart <=0) {
                 clearInterval(countdown);
+                quizcomplete();
             }   
         }, 1000);
     }
@@ -63,6 +64,7 @@ console.log(savedScores);
         scoreTotal.innerText = "Your score is " + clockStart + " points.";
         document.getElementById("final-score").appendChild(scoreTotal)
         clearInterval(countdown);
+        questionBox.remove();
         saveHighScore();
 
     }
@@ -80,6 +82,8 @@ console.log(savedScores);
 
     //when View High Scores is clicked, start displayHighScores function
     var displayHighScores = function() {
+        highScoresList.removeEventListener("click", displayHighScores);
+        savedScores.sort((a, b) => b-a);
         console.log(savedScores);
         var scoreList = document.createElement("ol");
         scoreList.textContent = "List of High Scores";
@@ -92,6 +96,8 @@ console.log(savedScores);
           scorelistItem.textContent = savedScores[i];
           document.getElementById("scoreList").appendChild(scorelistItem);
         };
+
+
 
         // alert("Let's see all the top scores:");
         // var scoreList = document.createElement("ul");
