@@ -1,52 +1,63 @@
 //global variable declarations
 var launcherEl = document.querySelector("#launcher");
 var highScoresList = document.querySelector("#high-scores");
-var clockStart = 50;
+var clockStart = 5000;
 var countdown = 0;
 var questionCounter = 0;
 var score = [];
 var guess = "";
 var username = "";
 var questionBox = null;
-// var score = [];
+
+//array containing all questions, choices, and solutions
 var questionContent = [ 
     {
-        question: "Does this work?",
-        incorrectA: "Doubt it",
-        incorrectB: "lmao no",
-        incorrectC: "r u srs?",
-        solution: "Yes!"
+        question: "What does the '++' do when added to the end of a variable containing a number?",
+        incorrectA: "Double it",
+        incorrectB: "Add these together",
+        incorrectC: "Increment by 2",
+        solution: "Increment by 1"
     },
     {
-        question: "Who are you?",
-        incorrectA: "Bjorn",
-        incorrectB: "Mr. Frog",
-        incorrectC: "Dr. Pepper",
-        solution: "Jason"
+        question: "What does [] do?",
+        incorrectA: "Used to contain a function",
+        incorrectB: "Used at the end of a function declaration",
+        incorrectC: "Links to other documents",
+        solution: "Used to contain arrays"
     },
     {
-        question: "Will we make it to the next question?",
-        incorrectA: "It's not looking likely",
-        incorrectB: "Maybe if you asked for directions...",
-        incorrectC: "Isn't this the last question?",
-        solution: "Of course we will! Just trust me"
+        question: "What is a global variable?",
+        incorrectA: "A variable that is universally recognized around the world",
+        incorrectB: "A variable declared inside a function, that can be used anywhere in that function",
+        incorrectC: "A variable that can be used both in JavaScript as well as other programming languages",
+        solution: "A variable declared outside of any function, that can be called from anywhere"
     },
     {
-        question: "Is there a light at the end of this tunnel?",
-        incorrectA: "I am the light. What you seek are answers",
-        incorrectB: "Life is but a dreary road, look not for the light.",
-        incorrectC: "Tunnels are mere constructs of man. Light is eternal",
-        solution: "yeah, there are only 5 questions."
+        question: "What is local storage?",
+        incorrectA: "Saved interactions and data that is deleted when the session ends",
+        incorrectB: "Private and sensitive data that cannot be retrieved by third party software",
+        incorrectC: "The same as cache and cookies",
+        solution: "Saved interactions and data that persists even after the session has ended"
+    },
+    {
+        question: "What method is used to add an element to another?",
+        incorrectA: "appendParent",
+        incorrectB: "addChild",
+        incorrectC: "addObject",
+        solution: "appendChild"
     }
 ];
-var savedScores = JSON.parse(localStorage.getItem("savedScores")) || [];
-console.log(savedScores);
 
+    //save scores to local storage
+    var savedScores = JSON.parse(localStorage.getItem("savedScores")) || [];
+    console.log(savedScores);
 
     //timer function that counts down when quiz begins.
     var timer = function() {
         var clockDisplay = document.createElement("h3");
-        clockDisplay.textContent = clockStart;
+        clockDisplay.className = "clock-display";
+        // clockDisplay.textContent = "Time Remaining:" + clockStart;
+        document.getElementById("clock").innerText = "Time Remaining:";
         document.getElementById("clock").appendChild(clockDisplay);
         countdown = setInterval(() => {
             clockDisplay.textContent = clockStart--;
@@ -57,68 +68,93 @@ console.log(savedScores);
         }, 1000);
     }
     
+    //upon completing all questions/time expiration, run quiz complete function
     var quizcomplete = function() {
+
+        //create a display for final score and add elements to populate.
         var finalScore = document.createElement("div");
         finalScore.className = "final-score";
         finalScore.id = "final-score"
         document.getElementById("quiz").appendChild(finalScore)
         scoreTotal = document.createElement("h3");
         scoreTotal.innerText = "Your score is " + clockStart + " points.";
-        document.getElementById("final-score").appendChild(scoreTotal)
+        document.getElementById("final-score").appendChild(scoreTotal);
+
+        //stop the clock, remove the quiz elements, and save high score
         clearInterval(countdown);
         questionBox.remove();
+        
         saveHighScore();
+
+
+
 
     }
     //save high score at end of quiz complete function
     var saveHighScore = function() {
-        savedScores.push(clockStart);
-        // score = {
-        //     points: clockStart,
-        //     name: username
-        // }
-        // savedScores.push(score);
+        score = {
+            points: clockStart,
+            name: username
+        }
+        savedScores.push(score);
         localStorage.setItem("savedScores", JSON.stringify(savedScores));
 
     };
 
     //when View High Scores is clicked, start displayHighScores function
     var displayHighScores = function() {
+        // remove event handler so that it can only display once and not stack
         highScoresList.removeEventListener("click", displayHighScores);
-        savedScores.sort((a, b) => b-a);
+
+        //sort scores based on highest points to lowest
+        savedScores.sort((a, b) => b.points - a.points);
         console.log(savedScores);
+
+        if (!savedScores[0]) {
+            alert("There are no scores to display");
+            highScoresList.addEventListener("click", displayHighScores);
+        }
+        else {
+        //create ordered list to contain scores
         var scoreList = document.createElement("ol");
         scoreList.textContent = "List of High Scores";
         scoreList.className = "high-score-table";
         scoreList.id = "scoreList";
         document.getElementById("high-score-list").appendChild(scoreList);
 
+        //loop through local storage to populate high scores as list items
         for (i = 0; i < savedScores.length; i++) {
           var scorelistItem = document.createElement("li");
-          scorelistItem.textContent = savedScores[i];
+          scorelistItem.className = "score-entry";
+          scorelistItem.textContent = savedScores[i].points + " - " + savedScores[i].name;
           document.getElementById("scoreList").appendChild(scorelistItem);
         };
+        
+        //create go back button to close high score list
+        var goBack = document.createElement("button");
+        goBack.className = "go-back";
+        goBack.textContent = "Close High Scores";
+        document.getElementById("scoreList").appendChild(goBack);   
+        goBack.addEventListener("click", function() {
+        scoreList.remove();
+        highScoresList.addEventListener("click", displayHighScores);
 
+        }); 
 
-
-        // alert("Let's see all the top scores:");
-        // var scoreList = document.createElement("ul");
-        // scoreList.textContent = "List of High Scores";
-        // scoreList.className = "high-score-table";
-        // scoreList.id = "scoreList";
-        // document.getElementById("high-score-list").appendChild(scoreList);
-        // var savedScores = localStorage.getItem("clockStart");
-        // console.log(savedScores);
-        // alert(savedScores);
-        // // // if there are no scores, set scores to an empty array and return out of the function
-        // // if (!clockStart) {
-        // //   return false;
-        // // }
-      
-        // // parse into array of objects
-        // savedScores = JSON.parse(savedScores);
-      
+        //create clear history button
+        var clearHistory = document.createElement("button");
+        clearHistory.className = "clear-history";
+        clearHistory.textContent = "Clear History";
+        document.getElementById("scoreList").appendChild(clearHistory);   
+        clearHistory.addEventListener("click", function() {
+            savedScores = [];
+            localStorage.setItem("savedScores", JSON.stringify(savedScores));     
+            scoreList.remove();           
+            highScoresList.addEventListener("click", displayHighScores);
+        }); 
+        }
     }
+
     var nextquestion = function() {
         questionBox.remove();
         questionCounter++;
@@ -212,13 +248,13 @@ var quizHandler = function() {
      var checkAnswer = function() { 
         console.log(guess);
         if (guess === questionContent[questionCounter].solution) {
-            alert(guess + " is correct!");
+            alert("Correct!");
             setTimeout(() => {
                 nextquestion();
             }, 500);
         }
         else {
-            alert("HAHAHA nice try but no.");
+            alert("Sorry, that's incorrect!");
             clockStart = clockStart -5;
             setTimeout(() => {
                 nextquestion();
@@ -244,8 +280,9 @@ var quizHandler = function() {
 launcherEl.addEventListener("click", function() {
     //remove start button
     launcher.remove();
-     //prompt for user name
-    username = prompt("Please enter your username for the game");
+
+    //prompt for user name
+    username = prompt("Please enter your name to go with your score into the high score records:");
 
     //start timer:
     timer();

@@ -1,4 +1,10 @@
+
+body {
+    font-family: "Open Sans", sans-serif;
+  }
+
 header {
+    font-family: "Open Sans", sans-serif;
     width: 100%;
 }
 
@@ -9,7 +15,7 @@ header {
 
 .open-scores {
     font-size: 28px;
-    color: plum;
+    color: #036ffc;
     float: left;
     margin: 10px;
     font-weight: bold;
@@ -18,11 +24,11 @@ header {
 }
 
 .quiz {
-    display: flex;
+    display: inline-block;
     flex-wrap: wrap;
     justify-content: center;
-    position: absolute;
-    left: 35%;
+    /* position: absolute; */
+    margin: 0 20%;
 }
 
 .start-quiz {
@@ -40,23 +46,25 @@ header {
 }
 
 .question-box {
-    border: 5px solid black;
     font-size: 36px;
     font-weight: bold;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 100px 40px 0 40px;    
+    margin: 0 20%;    
 }
 
 .question-header {
-    color: red;
+    width: 100%;
+    font-size: 36px;
+    color: #036ffc;
+    text-align: center;
 }
 
 .choice-item {
-    width: 50%;
-    height: 20%;
+    flex-wrap: wrap;
     color: white;
+    width: 100%;
     font-size: 32px;
     font-weight: bold;
     background: #036ffc;
@@ -83,13 +91,61 @@ header {
 
 .final-score {
     border: 5px solid black;
+    border-radius: 15px;
     font-size: 48px;
     font-weight: bold;
     padding: 20px;
-    margin: auto;
+    width: 100%;
+    margin: 0 20%;
+    color:#036ffc;
+    text-align: center;
 }
 
 .high-score-table {
-    color: blue;
+    font-size: 28px;
+    display: inline-block;
+    color: #036ffc;
     font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 8%;
 }
+
+.score-entry {
+    color: black;
+    font-size: 28px;
+    color: #036ffc;
+    position: relative;
+    left: 20%;
+}
+
+.clock-display {
+    padding: 0 20% 0 20%;
+    text-align: center;
+    color: red;
+    font-size: 48px;
+    margin-top: 2%;
+    margin-bottom: 0;
+}
+
+.clock-title {
+    padding: 0 20% 0 20%;
+    text-align: center;
+    color: red;
+    font-size: 28px;
+}
+
+.go-back, .clear-history {
+    font-size: 28px;
+    color: white;
+    float: left;
+    margin: 10px;
+    font-weight: bold;
+    border: none;
+    background: #036ffc;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 5px 0;
+    width: 60%;
+}
+
