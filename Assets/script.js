@@ -1,7 +1,7 @@
 //global variable declarations
 var launcherEl = document.querySelector("#launcher");
 var highScoresList = document.querySelector("#high-scores");
-var clockStart = 5000;
+var clockStart = 60;
 var countdown = 0;
 var questionCounter = 0;
 var score = [];
@@ -92,19 +92,20 @@ var questionContent = [
         document.getElementById("final-score").appendChild(playAgain);
         playAgain.addEventListener("click", function() {    
         
-        //remove play again button
-        playAgain.remove();
-        finalScore.remove();
-    
-        //prompt for user name
-        username = prompt("Please enter your name to go with your score into the high score records:");
-    
-        //start timer:
-        timer();
+            //remove play again button
+            playAgain.remove();
+            finalScore.remove();
+        
+            //prompt for user name
+            username = prompt("Please enter your name to go with your score into the high score records:");
+        
+            //start timer:
+            clockStart = 60;
+            timer();
 
-        //start quiz
-        questionCounter = 0;
-        quizHandler();
+            //start quiz
+            questionCounter = 0;
+            quizHandler();
         });
     
     }
@@ -116,7 +117,6 @@ var questionContent = [
         }
         savedScores.push(score);
         localStorage.setItem("savedScores", JSON.stringify(savedScores));
-
     };
 
     //when View High Scores is clicked, start displayHighScores function
@@ -128,6 +128,7 @@ var questionContent = [
         savedScores.sort((a, b) => b.points - a.points);
         console.log(savedScores);
 
+        //if no high scores, alert that there are no scores
         if (!savedScores[0]) {
             alert("There are no scores to display");
             highScoresList.addEventListener("click", displayHighScores);
@@ -164,6 +165,8 @@ var questionContent = [
         clearHistory.className = "clear-history";
         clearHistory.textContent = "Clear History";
         document.getElementById("scoreList").appendChild(clearHistory);   
+        
+        //clear history function to remove high scores from local storage
         clearHistory.addEventListener("click", function() {
             savedScores = [];
             localStorage.setItem("savedScores", JSON.stringify(savedScores));     
@@ -173,6 +176,7 @@ var questionContent = [
         }
     }
 
+    //upon answering a question, progress to the next question until you reach the end of the question content array
     var nextquestion = function() {
         questionBox.remove();
         questionCounter++;
@@ -188,11 +192,6 @@ var questionContent = [
 //Quiz function
 var quizHandler = function() {
     
-    //Display Instructions
-    // window.alert("Welcome to the quiz. You have 60 seconds to answer all questions. For every wrong answer, you will lose 5 seconds of time. Your high score is equal to the number of seconds remaining when you finish the quiz!");
-    // window.confirm("Are you ready?");
-
-
 
     //create Container to hold elements 
     questionBox = document.createElement("div");
@@ -205,7 +204,6 @@ var quizHandler = function() {
     const displayQuestion = options[0];
     let questionChoices = _.shuffle(options.slice(1));
     console.log({questionChoices, displayQuestion});
-    // let questionChoicesCounter = 0;
 
     //create H2 element within div to hold question text
     var questionDisplay = document.createElement("h2");
@@ -225,22 +223,18 @@ var quizHandler = function() {
     choiceOptionB.className = "choice-item";
     const optionB = questionChoices[1];
     choiceOptionB.textContent = optionB[1];
-    // choiceOptionB.textContent = questionContent[questionCounter].incorrectB;
     document.getElementById("question-box").appendChild(choiceOptionB);
 
     var choiceOptionC = document.createElement("button");
     choiceOptionC.className = "choice-item";
     const optionC = questionChoices[2];
     choiceOptionC.textContent = optionC[1];
-
-    // choiceOptionC.textContent = questionContent[questionCounter].incorrectC;
     document.getElementById("question-box").appendChild(choiceOptionC);
 
     var choiceOptionD = document.createElement("button");
     choiceOptionD.className = "choice-item";
     const optionD = questionChoices[3];
     choiceOptionD.textContent = optionD[1];
-    // choiceSolution.textContent = questionContent[questionCounter].solution;
     document.getElementById("question-box").appendChild(choiceOptionD);
    
     //Add event listeners on buttons to determine correct answers
@@ -262,7 +256,7 @@ var quizHandler = function() {
         checkAnswer();
     });
     
-     //checks clicked answer and compares to correct answer
+     //checks clicked answer and compares to correct answer. deducts 5 seconds for incorrect answer
      var checkAnswer = function() { 
         console.log(guess);
         if (guess === questionContent[questionCounter].solution) {
@@ -280,24 +274,14 @@ var quizHandler = function() {
         }
     }
 }
-    //create Question element
 
-
-    //Create Answer Buttons
-
-    
-    //Begin Countdown Timer
-
-    
-    //Pull question #1 from QuestionContent Array, and display all values
-
-    //if function to validate correct answer
-
-
-//event listeners
+//event listener to start game
 launcherEl.addEventListener("click", function() {
     //remove start button
     launcher.remove();
+
+    //Display Instructions
+    window.alert("Welcome to the quiz. You have 60 seconds to answer all questions. For every wrong answer, you will lose 5 seconds of time. Your high score is equal to the number of seconds remaining when you finish the quiz!");
 
     //prompt for user name
     username = prompt("Please enter your name to go with your score into the high score records:");
@@ -308,4 +292,5 @@ launcherEl.addEventListener("click", function() {
     quizHandler();
 });
 
+//event listener to display high scores
 highScoresList.addEventListener("click", displayHighScores);

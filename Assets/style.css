@@ -78,6 +78,7 @@ header {
     flex-wrap: wrap;
     color: white;
     width: 100%;
+    height: 25%;
     font-size: 32px;
     font-weight: bold;
     background: #036ffc;
@@ -86,20 +87,6 @@ header {
 
 .choice-item:hover {
     opacity: 0.8;
-}
-
-.question-display {
-    color: green;
-}
-
-.correct {
-    width: 50%;
-    height: 20%;
-    color: white;
-    font-size: 32px;
-    font-weight: bold;
-    background: #42f560;
-    text-align: center;
 }
 
 .final-score {
@@ -168,7 +155,7 @@ header {
     }   
 
     .quiz {
-        margin: 0 10%;
+        margin: auto;
     }
 
     .final-score {
@@ -178,4 +165,30 @@ header {
     .play-again {
     margin: 0 36%;
     }
+}
+
+@media screen and (max-width: 768px) {
+    .clock-display {
+        padding: 0;
+    }
+
+    .final-score {
+        width: 95%;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .start-quiz {
+        position: absolute;
+        left: 25%;
+    }
+
+    .clock-title {
+        padding: 0;
+    }
+
+    .final-score {
+        width: 90%;
+    }
+
 }
