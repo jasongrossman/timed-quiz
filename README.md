@@ -12,3 +12,4 @@ Brief Description:
 * User inputs their name at the beginning and answers questions, losing 5pts(seconds) for every incorrect answer.
 * Upon completing the quiz, their high score is saved to local storage.
 * User can replay the game once completed, and review high scores and clear high score history.
+* With thanks to TA Amit for helping me randomize my question choice options by teaching me how to use lodash third party API.
