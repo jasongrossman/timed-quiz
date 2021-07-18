@@ -83,12 +83,30 @@ var questionContent = [
         //stop the clock, remove the quiz elements, and save high score
         clearInterval(countdown);
         questionBox.remove();
-        
         saveHighScore();
 
+        //provide option to play again
+        var playAgain = document.createElement("button");
+        playAgain.className = "play-again";
+        playAgain.innerText = "Play Again";
+        document.getElementById("final-score").appendChild(playAgain);
+        playAgain.addEventListener("click", function() {    
+        
+        //remove play again button
+        playAgain.remove();
+        finalScore.remove();
+    
+        //prompt for user name
+        username = prompt("Please enter your name to go with your score into the high score records:");
+    
+        //start timer:
+        timer();
 
-
-
+        //start quiz
+        questionCounter = 0;
+        quizHandler();
+        });
+    
     }
     //save high score at end of quiz complete function
     var saveHighScore = function() {
